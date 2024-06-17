@@ -4,6 +4,14 @@ local keymap = vim.keymap
 
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
+keymap.set("n", "<C-d>", "<C-d>zz")
+keymap.set("n", "<C-u>", "<C-u>zz")
+keymap.set("n", "*", "*zz")
+keymap.set("n", "#", "#zz")
+keymap.set("n", "n", "nzz")
+keymap.set("n", "N", "Nzz")
+keymap.set("n", "Q", "<nop>")
+
 -- window management
 keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to window right" })
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to window left" })
