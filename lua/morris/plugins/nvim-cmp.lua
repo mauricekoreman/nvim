@@ -20,6 +20,34 @@ return {
 
 		local lspkind = require("lspkind")
 
+		local cmp_kinds = {
+			Text = "",
+			Method = "",
+			Function = "",
+			Constructor = "",
+			Field = "",
+			Variable = "",
+			Class = "",
+			Interface = "",
+			Module = "",
+			Property = "",
+			Unit = "",
+			Value = "",
+			Enum = "",
+			Keyword = "",
+			Snippet = "",
+			Color = "",
+			File = "",
+			Reference = "",
+			Folder = "",
+			EnumMember = "",
+			Constant = "",
+			Struct = "",
+			Event = "",
+			Operator = "",
+			TypeParameter = "",
+		}
+
 		-- loads vscode style snippets from installed plugins
 		require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -50,10 +78,42 @@ return {
 			-- configure lspkind for vs-code like pictograms in completion menu
 			formatting = {
 				format = lspkind.cmp_format({
+					mode = "symbol",
 					maxwidth = 50,
 					ellipsis_char = "...",
+					before = function(entry, vim_item)
+						-- adding path information to the menu
+						if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
+							vim_item.menu = entry.completion_item.detail
+						else
+							vim_item.menu = ({
+								nvim_lsp = "[LSP]",
+								luasnip = "[Snippet]",
+								buffer = "[Buffer]",
+								path = "[Path]",
+							})[entry.source.name]
+						end
+
+						vim_item.kind = cmp_kinds[vim_item.kind] or ""
+
+						return vim_item
+					end,
 				}),
 			},
+
+			-- working path
+			--	formatting = {
+			--		format = function(entry, vim_item)
+			--			-- adding path information to the menu
+			--			if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
+			--				vim_item.menu = entry.completion_item.detail
+			--			end
+
+			--			-- vim_item.kind = cmp_kinds[vim_item.kind] or ""
+
+			--			return vim_item
+			--		end,
+			--	},
 		})
 	end,
 }
